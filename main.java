@@ -39,18 +39,34 @@ public class main {
 
     public static void deleteEmployee(int code){
         for(int i=0;i<countEmployees;i++){
-            if(EMPLOYEES.get(i).getCode().equals(code)){
+            if(EMPLOYEES.get(i).getCode()== code){
                 EMPLOYEES.remove(EMPLOYEES.get(i));
             }
         }
-
     }
 
-    public static void update(int code){
-        String name, adress;
-        int type, option;
+    public static int getEmployeeID(String name){
+        for(int i=0;i<countEmployees;i++){
+            if(name.equals(EMPLOYEES.get(i).getName()) && EMPLOYEES.get(i).getCode()!=-1) {
+                return EMPLOYEES.get(i).getCode();
+            }
+        }//Fim for
+        return -1;
+    }
+
+    public static void update(){
 
         Scanner keyboard = new Scanner(System.in);
+
+        String nome;
+
+        System.out.println("Digite o nome do funcionário: ");
+        nome = keyboard.nextLine();
+
+        int code = getEmployeeID(nome);
+
+        String name, adress;
+        int type, option;
 
         System.out.println("---MUDANÇA DE REGISTRO---\n");
         System.out.println("Diga o que deseja alterar:\n1 - Nome\n2 - Endereço\n3 - Tipo de salário");
@@ -83,11 +99,37 @@ public class main {
                 System.out.println("Opção inválida");
                 break;
         }//End switch
+    }
 
+    public static void searchEmployee(){
+        String nome;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Digite o nome do funcionário: ");
+        nome = keyboard.nextLine();
+
+        int code = getEmployeeID(nome);
+
+        for(int i=0;i<countEmployees;i++){
+            if((EMPLOYEES.get(i).getCode()) == code);
+            System.out.println("--FUNCIONÁRIO--");
+            System.out.println("Nome: " + EMPLOYEES.get(i).getName());
+            System.out.println("Login: " + EMPLOYEES.get(i).getAdress());
+            System.out.println("\n");
+        }
+
+        System.out.println("--FUNCIONÁRIO NÃO ENCONTRADO--");
 
     }
 
+
     public static void main(String args[]){
+        addEmployee();
+        searchEmployee();
+        update();
+        searchEmployee();
+        deleteEmployee(0);
+        searchEmployee();
 
     }
 }
