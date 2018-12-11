@@ -36,6 +36,8 @@ public class employee {
         if(syndicate){
             return true;
         }
+
+        return false;
     }
 
     public void setName(String newName){
