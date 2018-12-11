@@ -12,7 +12,7 @@ public class employee {
     private int type;
     private ArrayList<card> timecards = new ArrayList<>();
     //ADD VENDAS
-    //ADD TAXA DE SERVIÇO
+    private float taxes;
     private boolean syndicate;
     private int syndiNumber;
 
@@ -44,7 +44,7 @@ public class employee {
         this.name = newName;
     }
 
-    public void setAdreess(String newAdress){
+    public void setAdress(String newAdress){
         this.adress = newAdress;
     }
 
@@ -58,6 +58,24 @@ public class employee {
 
     public void dissociate(){
         this.syndicate = false;
+    }
+
+    public card getTimecards(){
+        for(int i=0;i<timecards.size();i++){
+            return timecards.get(i);
+        }
+    }
+
+    public void addTimecard(card newCard){
+        this.timecards.add(newCard);
+    }
+
+    public float getTaxes(){
+        return this.taxes;
+    }
+
+    public void addTaxes(float value){
+        this.taxes+=value;
     }
 
     public employee(int code, String name, String adress, int type){
