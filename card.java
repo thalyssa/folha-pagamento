@@ -1,4 +1,4 @@
-import java.class.Float;
+import java.lang.Float;
 
 public class card{
 
