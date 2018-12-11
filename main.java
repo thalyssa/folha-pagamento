@@ -8,6 +8,7 @@ public class main {
 
     public static ArrayList<employee> EMPLOYEES = new ArrayList<>();
 
+    //PRONTA - TESTADA
     public static void addEmployee(){
         employee newEmployee;
         String name, adress;
@@ -54,7 +55,10 @@ public class main {
         return -1;
     }
 
+    //Consertar - Falha no Scanner
     public static void update(){
+
+        System.out.println("---MUDANÇA DE REGISTRO---\n");
 
         Scanner keyboard = new Scanner(System.in);
 
@@ -68,7 +72,6 @@ public class main {
         String name, adress;
         int type, option;
 
-        System.out.println("---MUDANÇA DE REGISTRO---\n");
         System.out.println("Diga o que deseja alterar:\n1 - Nome\n2 - Endereço\n3 - Tipo de salário");
 
         option = keyboard.nextInt();
@@ -76,13 +79,13 @@ public class main {
         switch (option){
             case 1:
                 System.out.println("Digite o novo nome: ");
-                name = keyboard.nextLine();
+                name = keyboard.next();
                 EMPLOYEES.get(code).setName(name);
                 break;
             case 2:
                 System.out.println("Digite o novo endereço: ");
-                adress = keyboard.nextLine();
-                EMPLOYEES.get(code).setAdreess(adress);
+                adress = keyboard.next();
+                EMPLOYEES.get(code).setAdress(adress);
                 break;
 
             case 3:
@@ -101,34 +104,38 @@ public class main {
         }//End switch
     }
 
-    public static void searchEmployee(){
+    //PRONTA - TESTADA
+    public static void searchEmployee() {
         String nome;
         Scanner keyboard = new Scanner(System.in);
-
+        boolean flag = false;
+        System.out.println("--PESQUISA DE FUNCIONÁRIO--");
         System.out.println("Digite o nome do funcionário: ");
         nome = keyboard.nextLine();
 
         int code = getEmployeeID(nome);
 
-        for(int i=0;i<countEmployees;i++){
-            if((EMPLOYEES.get(i).getCode()) == code);
-            System.out.println("--FUNCIONÁRIO--");
-            System.out.println("Nome: " + EMPLOYEES.get(i).getName());
-            System.out.println("Login: " + EMPLOYEES.get(i).getAdress());
-            System.out.println("\n");
+        for (int i = 0; i < countEmployees; i++) {
+            if ((EMPLOYEES.get(i).getCode()) == code) {
+                flag = true;
+                System.out.println("Matrícula: " + EMPLOYEES.get(i).getCode());
+                System.out.println("Nome: " + EMPLOYEES.get(i).getName());
+                System.out.println("Endereço: " + EMPLOYEES.get(i).getAdress());
+                System.out.println("Tipo de salário: " + EMPLOYEES.get(i).getType());
+                System.out.println("\n");
+            }//End if
+        }//End for
+
+        if(flag == false){
+            System.out.println("--FUNCIONÁRIO NÃO ENCONTRADO--");
         }
 
-        System.out.println("--FUNCIONÁRIO NÃO ENCONTRADO--");
-
-    }
+    }//End searchEmployee
 
 
     public static void main(String args[]){
         addEmployee();
-        searchEmployee();
         update();
-        searchEmployee();
-        deleteEmployee(0);
         searchEmployee();
 
     }
