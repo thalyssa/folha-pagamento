@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import static java.lang.System.exit;
+import static java.lang.System.setOut;
 
 public class main {
 
@@ -38,12 +39,17 @@ public class main {
         countEmployees++;
     }
 
+    //PRONTA - TESTADA
     public static void deleteEmployee(int code){
-        for(int i=0;i<countEmployees;i++){
-            if(EMPLOYEES.get(i).getCode()== code){
-                EMPLOYEES.remove(EMPLOYEES.get(i));
-            }
-        }
+        if(countEmployees<=0){
+            System.out.println("Sem empregados na base de dados!");
+        }else {
+            for (int i = 0; i < countEmployees; i++) {
+                if (EMPLOYEES.get(i).getCode() == code) {
+                    EMPLOYEES.remove(EMPLOYEES.get(i));
+                }
+            }//For
+        }//Else
     }
 
     public static int getEmployeeID(String name){
@@ -56,18 +62,11 @@ public class main {
     }
 
     //Consertar - Falha no Scanner
-    public static void update(){
+    public static void update(int code){
 
         System.out.println("---MUDANÇA DE REGISTRO---\n");
 
         Scanner keyboard = new Scanner(System.in);
-
-        String nome;
-
-        System.out.println("Digite o nome do funcionário: ");
-        nome = keyboard.nextLine();
-
-        int code = getEmployeeID(nome);
 
         String name, adress;
         int type, option;
@@ -132,11 +131,126 @@ public class main {
 
     }//End searchEmployee
 
+    public static void init(int flag){
+        if(flag==1) {
+
+            Scanner keyboard = new Scanner(System.in);
+            int option;
+
+            System.out.println("Bem vindo ao sistema de Folha de Pagamento\nO que deseja fazer?");
+            System.out.println("1 - Adicionar um empregado");
+            System.out.println("2 - Remover um empregado");
+            System.out.println("3 - Adicionar um cartão de ponto");
+            System.out.println("4 - Adicionar uma venda");
+            System.out.println("5 - Adicionar taxa de serviço");
+            System.out.println("6 - Alterar dados de um empregado");
+            System.out.println("7 - Rodar folha de pagamento");
+            System.out.println("8 - Desfazer/refazer última alteração");
+            System.out.println("9 - Escolher Agenda de Pagamento");
+            System.out.println("10 - Criar nova Agenda de Pagamento");
+
+            option = keyboard.nextInt();
+
+            switch(option){
+                case 1:
+                    addEmployee();
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+
+                case 2:
+                    System.out.println("Digite o nome do funcionário: ");
+                    String name = keyboard.next();
+
+                    int code = getEmployeeID(name);
+
+                    deleteEmployee(code);
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+
+                case 3:
+                    System.out.println("Digite o nome do funcionário: ");
+                    name = keyboard.nextLine();
+
+                    code = getEmployeeID(name);
+
+                    EMPLOYEES.get(code).addTimecard();
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 4:
+                    System.out.println("Digite o nome do funcionário: ");
+                    name = keyboard.nextLine();
+
+                    code = getEmployeeID(name);
+
+                    EMPLOYEES.get(code).addSell();
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 5:
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 6:
+
+                    update();
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 7:
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 8:
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 9:
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 10:
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+
+            }//Fim switch
+        }//Fim if
+
+    }
 
     public static void main(String args[]){
-        addEmployee();
-        update();
-        searchEmployee();
+
+        init(1);
 
     }
 }
