@@ -38,25 +38,9 @@ public class sell {
         this.seller = seller;
     }
 
-    public float calcCommission(float value){
-        float commission;
-        float percentage;
-        Scanner keyboard = new Scanner(System.in);
-
-        System.out.println("Digite a porcentagem da comissão: ");
-        percentage = keyboard.nextFloat();
-
-        percentage = percentage/100;
-
-        commission = percentage*value;
-
-        return commission;
-    }
-
     public sell(String date, float value, int seller){
         this.date = date;
         this.value = value;
-        this.commission = calcCommission(value);
         this.seller = seller;
     }
 
