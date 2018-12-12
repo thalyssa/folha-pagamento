@@ -11,7 +11,8 @@ public class main {
     public static void addEmployee(){
         employee newEmployee;
         String name, adress, payday;
-        int type;
+        float hSalary, monSalary, commission;
+        int type, payMethod;
 
         Scanner keyboard = new Scanner(System.in);
 
@@ -25,17 +26,41 @@ public class main {
         System.out.println("Tipo de salário:\n1 - Horista\n2 - Mensalista\n3 - Comissionado");
         type = keyboard.nextInt();
 
-        if(type<1 || type>3){
-            System.out.println("TIPO DE SALÁRIO INVÁLIDO. Por favor, tente novamente");
-            exit(0);
+        switch (type){
+            case 1:
+                System.out.println("Salário por hora: ");
+                hSalary = keyboard.nextFloat();
+                monSalary = 0;
+                commission = 0;
+                break;
+            case 2:
+                System.out.println("Salário Mensal: ");
+                monSalary = keyboard.nextFloat();
+                hSalary = 0;
+                commission = 0;
+                break;
+            case 3:
+                System.out.println("Salário Mensal: ");
+                monSalary = keyboard.nextFloat();
+
+                System.out.println("Comissão: ");
+                commission = keyboard.nextFloat();
+                hSalary = 0;
+                break;
+            default:
+                System.out.println("TIPO DE SALÁRIO INVÁLIDO. Por favor, tente novamente");
+                break;
         }
 
-        System.out.println("Data de pagamento no formato DD/MM: ");
+        System.out.println("Dia de pagamento no formato DD: ");
         payday = keyboard.nextLine();
+
+        System.out.println("Método de pagamento\n1 - Cheque pelos Correios\n2 - Cheque em mãos\n3 - Depósito em conta");
+        payMethod = keyboard.nextInt();
 
         keyboard.nextLine();
 
-        newEmployee = new employee(countEmployees, name, adress, payday, type);
+        newEmployee = new employee(countEmployees, name, adress, payday, payMethod, hSalary, monSalary, commission, type);
 
         EMPLOYEES.add(newEmployee);
 
@@ -63,30 +88,46 @@ public class main {
         return -1;
     }
 
-    /*public static void payroll(){
+    public static void payroll(){
         Scanner keyboard = new Scanner(System.in);
         String date;
 
-        System.out.println("Digite a data de pagamento no formato DD/MM: ");
+        System.out.println("Digite o dia de pagamento no formato DD: ");
         date = keyboard.nextLine();
 
         for(int i=0;i<countEmployees;i++){
             if(EMPLOYEES.get(i).getPayday().equals(date)){
-                
+                //Rotina de pagamento aqui
             }
         }
-    }*/
+    }
 
-    public static void update(int code){
+    public static void update(){
 
         System.out.println("---MUDANÇA DE REGISTRO---\n");
 
         Scanner keyboard = new Scanner(System.in);
 
-        String name, adress;
-        int type, option;
+        String name, parameter, adress;
+        int type, option, code, payMethod;
+        float commission, hSalary, monSalary;
 
-        System.out.println("Diga o que deseja alterar:\n1 - Nome\n2 - Endereço\n3 - Tipo de salário");
+        System.out.println("Digite o nome do empregado a ter o registro alterado: ");
+        parameter = keyboard.nextLine();
+
+        keyboard.nextLine();
+
+        code = getEmployeeID(parameter);
+
+        System.out.println("Diga o que deseja alterar: ");
+        System.out.println("1 - Nome");
+        System.out.println("2 - Endereço");
+        System.out.println("3 - Tipo salarial");
+        System.out.println("4 - Método de pagamento");
+        System.out.println("5 - Afiliar-se ao sindicato");
+        System.out.println("6 - Desafiliar-se do sindicato");
+        System.out.println("7 - Mudar identificação sindical");
+        System.out.println("8 - Adicionar taxa sindical");
 
         option = keyboard.nextInt();
 
@@ -103,17 +144,71 @@ public class main {
                 keyboard.nextLine();
                 EMPLOYEES.get(code).setAdress(adress);
                 break;
-
             case 3:
                 System.out.println("Digite o novo tipo de salário:\n1 - Horista\n2 - Mensalista\n3 - Comissionado");
                 type = keyboard.nextInt();
                 keyboard.nextLine();
 
-                if(type<1 || type>3){
-                    System.out.println("TIPO DE SALÁRIO INVÁLIDO. Por favor, tente novamente");
-                    exit(0);
+                EMPLOYEES.get(code).setType(type);
+
+                switch(type){
+                    case 1:
+                        System.out.println("Salário por hora: ");
+                        hSalary = keyboard.nextFloat();
+
+                        EMPLOYEES.get(code).sethSalary(hSalary);
+                        break;
+                    case 2:
+                        System.out.println("Salário Mensal: ");
+                        monSalary = keyboard.nextFloat();
+
+                        EMPLOYEES.get(code).setMonSalary(monSalary);
+                        break;
+                    case 3:
+                        System.out.println("Salário Mensal: ");
+                        monSalary = keyboard.nextFloat();
+
+                        System.out.println("Comissão: ");
+                        commission = keyboard.nextFloat();
+
+                        EMPLOYEES.get(code).setMonSalary(monSalary);
+                        EMPLOYEES.get(code).setCommission(commission);
+                        break;
+                    default:
+                        System.out.println("TIPO DE SALÁRIO INVÁLIDO. Por favor, tente novamente");
+                        break;
+                }//Fim switch type
+
+                break;
+            case 4:
+                System.out.println("Escolha o novo método de pagamento\n1 - Cheque pelos Correios\n2 - Cheque em mãos\n3 - Depósito em conta");
+                payMethod = keyboard.nextInt();
+                keyboard.nextLine();
+                EMPLOYEES.get(code).setPayMethod(payMethod);
+                break;
+            case 5:
+                EMPLOYEES.get(code).associate();
+                break;
+            case 6:
+                EMPLOYEES.get(code).dissociate();
+                break;
+            case 7:
+                if(EMPLOYEES.get(code).isSyndicate()){
+                    int syndiNumber;
+                    System.out.println("Digite a nova identificação sindical: ");
+                    syndiNumber = keyboard.nextInt();
+
+                    EMPLOYEES.get(code).setSyndiNumber(syndiNumber);
+                }else{
+                    System.out.println("O empregado não está associado ao sindicato");
                 }
-                EMPLOYEES.get(code).setType(code);
+                break;
+            case 8:
+                if(EMPLOYEES.get(code).isSyndicate()){
+                    EMPLOYEES.get(code).addTaxes();
+                }else{
+                    System.out.println("O empregado não está associado ao sindicato");
+                }
                 break;
             default:
                 System.out.println("Opção inválida");
@@ -169,7 +264,7 @@ public class main {
             option = keyboard.nextInt();
 
             switch(option){
-                case 1:
+                case 1: //Add um funcionário
                     addEmployee();
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
@@ -177,7 +272,7 @@ public class main {
                     init(flag);
                     break;
 
-                case 2:
+                case 2: //Remover um funcionário
                     System.out.println("Digite o nome do funcionário: ");
                     String name = keyboard.next();
                     keyboard.nextLine();
@@ -192,7 +287,7 @@ public class main {
                     init(flag);
                     break;
 
-                case 3:
+                case 3: //Add cartão de ponto
                     System.out.println("Digite o nome do funcionário: ");
                     name = keyboard.nextLine();
                     keyboard.nextLine();
@@ -205,7 +300,7 @@ public class main {
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
-                case 4:
+                case 4: //Add venda
                     System.out.println("Digite o nome do funcionário: ");
                     name = keyboard.nextLine();
                     keyboard.nextLine();
@@ -218,29 +313,28 @@ public class main {
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
-                case 5:
-
-                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
-                    flag = keyboard.nextInt();
-                    init(flag);
-                    break;
-                case 6:
-
+                case 5: //Add taxa de serviço
                     System.out.println("Digite o nome do funcionário: ");
-                    name = keyboard.nextLine();
+                    String name = keyboard.next();
                     keyboard.nextLine();
 
-                    code = getEmployeeID(name);
+                    int code = getEmployeeID(name);
 
-                    update(code);
+                    EMPLOYEES.get(code).addTaxes();
+
+                    System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
+                    flag = keyboard.nextInt();
+                    init(flag);
+                    break;
+                case 6: //Alterar dados do funcionário
+                    update();
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
 
-                case 7:
-
+                case 7: //Rodar folha de pagamento
                     payroll();
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
@@ -248,19 +342,19 @@ public class main {
                     init(flag);
                     break;
 
-                case 8:
+                case 8: //Undo/Redo
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
-                case 9:
+                case 9: //Escolher agenda de pagamento
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
-                case 10:
+                case 10: //Criar nova agenda de pagamento
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
