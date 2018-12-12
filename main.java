@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import static java.lang.System.exit;
-import static java.lang.System.setOut;
 
 public class main {
 
@@ -9,10 +8,9 @@ public class main {
 
     public static ArrayList<employee> EMPLOYEES = new ArrayList<>();
 
-    //PRONTA - TESTADA
     public static void addEmployee(){
         employee newEmployee;
-        String name, adress;
+        String name, adress, payday;
         int type;
 
         Scanner keyboard = new Scanner(System.in);
@@ -32,14 +30,18 @@ public class main {
             exit(0);
         }
 
-        newEmployee = new employee(countEmployees, name, adress, type);
+        System.out.println("Data de pagamento no formato DD/MM: ");
+        payday = keyboard.nextLine();
+
+        keyboard.nextLine();
+
+        newEmployee = new employee(countEmployees, name, adress, payday, type);
 
         EMPLOYEES.add(newEmployee);
 
         countEmployees++;
     }
 
-    //PRONTA - TESTADA
     public static void deleteEmployee(int code){
         if(countEmployees<=0){
             System.out.println("Sem empregados na base de dados!");
@@ -61,7 +63,20 @@ public class main {
         return -1;
     }
 
-    //Consertar - Falha no Scanner
+    /*public static void payroll(){
+        Scanner keyboard = new Scanner(System.in);
+        String date;
+
+        System.out.println("Digite a data de pagamento no formato DD/MM: ");
+        date = keyboard.nextLine();
+
+        for(int i=0;i<countEmployees;i++){
+            if(EMPLOYEES.get(i).getPayday().equals(date)){
+                
+            }
+        }
+    }*/
+
     public static void update(int code){
 
         System.out.println("---MUDANÇA DE REGISTRO---\n");
@@ -78,18 +93,21 @@ public class main {
         switch (option){
             case 1:
                 System.out.println("Digite o novo nome: ");
-                name = keyboard.next();
+                name = keyboard.nextLine();
+                keyboard.nextLine();
                 EMPLOYEES.get(code).setName(name);
                 break;
             case 2:
                 System.out.println("Digite o novo endereço: ");
                 adress = keyboard.next();
+                keyboard.nextLine();
                 EMPLOYEES.get(code).setAdress(adress);
                 break;
 
             case 3:
                 System.out.println("Digite o novo tipo de salário:\n1 - Horista\n2 - Mensalista\n3 - Comissionado");
                 type = keyboard.nextInt();
+                keyboard.nextLine();
 
                 if(type<1 || type>3){
                     System.out.println("TIPO DE SALÁRIO INVÁLIDO. Por favor, tente novamente");
@@ -103,7 +121,6 @@ public class main {
         }//End switch
     }
 
-    //PRONTA - TESTADA
     public static void searchEmployee() {
         String nome;
         Scanner keyboard = new Scanner(System.in);
@@ -163,6 +180,8 @@ public class main {
                 case 2:
                     System.out.println("Digite o nome do funcionário: ");
                     String name = keyboard.next();
+                    keyboard.nextLine();
+
 
                     int code = getEmployeeID(name);
 
@@ -176,6 +195,7 @@ public class main {
                 case 3:
                     System.out.println("Digite o nome do funcionário: ");
                     name = keyboard.nextLine();
+                    keyboard.nextLine();
 
                     code = getEmployeeID(name);
 
@@ -188,6 +208,7 @@ public class main {
                 case 4:
                     System.out.println("Digite o nome do funcionário: ");
                     name = keyboard.nextLine();
+                    keyboard.nextLine();
 
                     code = getEmployeeID(name);
 
@@ -205,18 +226,28 @@ public class main {
                     break;
                 case 6:
 
-                    update();
+                    System.out.println("Digite o nome do funcionário: ");
+                    name = keyboard.nextLine();
+                    keyboard.nextLine();
+
+                    code = getEmployeeID(name);
+
+                    update(code);
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
+
                 case 7:
 
+                    payroll();
+
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
+
                 case 8:
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
@@ -248,9 +279,18 @@ public class main {
 
     }
 
+    public static void getEmployeeList(){
+        System.out.println("--LISTA DE EMPREGADOS--");
+        for(int i=0;i<EMPLOYEES.size();i++) {
+            System.out.println(EMPLOYEES.get(i).getName());
+        }//Fim do for
+    }
+
     public static void main(String args[]){
 
         init(1);
+
+        getEmployeeList();
 
     }
 }
