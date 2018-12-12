@@ -26,6 +26,8 @@ public class employee {
     private float commission;
     private String payday;
     private int payMethod;
+    private String paymentAgenda;
+    private float totalSalary;
 
     public String getPayday() {
         return payday;
@@ -184,7 +186,48 @@ public class employee {
         return valCommission;
     }
 
-    public employee(int code, String name, String adress, String payday, int payMethod, float hSalary, float monSalary, float commission, int type){
+    public String getPaymentAgenda() {
+        return paymentAgenda;
+    }
+
+    public void setPaymentAgenda() {
+        String newPaymentAgenda;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Digite a nova agenda de pagamento: ");
+        newPaymentAgenda = keyboard.nextLine();
+        keyboard.nextLine();
+
+        this.paymentAgenda = newPaymentAgenda;
+    }
+
+    public void paymentRoutine(){
+        float whours = 0, bonus = 0;
+
+        switch(this.type){
+            case 1: //Horistas
+                for(int i=0;i<timecards.size();i++){
+                    whours += timecards.get(i).getHours();
+                }
+
+                if(whours>8){
+                    bonus = hSalary*(whours - 8)*(15/10);
+                }
+                this.totalSalary = bonus + this.gethSalary();
+                break;
+            case 2: //Mensalistas
+                this.totalSalary = monSalary;
+                break;
+            case 3: //Comissionados
+                for(int i=0;i<sells.size();i++){
+                    bonus += calcCommission(sells.get(i).getValue());
+                }
+                this.totalSalary = ((monSalary/30)*14) + bonus;
+                break;
+        }
+    }
+
+    public employee(int code, String name, String adress, String payday, int payMethod, float hSalary, float monSalary, float commission, int type, String paymentAgenda){
         this.code = code;
         this.name = name;
         this.adress = adress;
@@ -194,5 +237,6 @@ public class employee {
         this.monSalary = monSalary;
         this.commission = commission;
         this.type = type;
+        this.paymentAgenda = paymentAgenda;
     }
 }
