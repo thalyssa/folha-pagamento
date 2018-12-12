@@ -16,7 +16,10 @@ public class employee {
     private float taxes;
     private boolean syndicate;
     private int syndiNumber;
-    private float salary;
+    private float hSalary;
+    private float monSalary;
+    private float commission;
+    private String payday;
 
     public String getPayday() {
         return payday;
@@ -25,8 +28,6 @@ public class employee {
     public void setPayday(String payday) {
         this.payday = payday;
     }
-
-    private String payday;
 
     public int getCode(){
         return this.code;
@@ -42,6 +43,38 @@ public class employee {
 
     public int getType(){
         return this.type;
+    }
+
+    public float gethSalary() {
+        return hSalary;
+    }
+
+    public void sethSalary(float hSalary) {
+        this.hSalary = hSalary;
+    }
+
+    public float getMonSalary() {
+        return monSalary;
+    }
+
+    public void setMonSalary(float monSalary) {
+        this.monSalary = monSalary;
+    }
+
+    public float getCommission() {
+        return commission;
+    }
+
+    public void setCommission(float commission) {
+        this.commission = commission;
+    }
+
+    public int getSyndiNumber() {
+        return syndiNumber;
+    }
+
+    public void setSyndiNumber(int syndiNumber) {
+        this.syndiNumber = syndiNumber;
     }
 
     public boolean isSyndicate(){
@@ -72,13 +105,6 @@ public class employee {
         this.syndicate = false;
     }
 
-    /*public card getTimecards(){
-        for(int i=0;i<timecards.size();i++){
-            card CARDS = this.timecards.get(i);
-            return CARDS;
-        }
-    }*/
-
     public void addTimecard(){
         card newCard;
         String entry;
@@ -104,7 +130,14 @@ public class employee {
         return this.taxes;
     }
 
-    public void addTaxes(float value){
+    public void addTaxes(){
+        
+        Scanner keyboard = new Scanner(System.in);
+        float value;
+
+        System.out.printf("Digite o valor da taxa a ser adicionada: ");
+        value = keyboard.nextFloat();
+        
         this.taxes+=value;
     }
 
@@ -125,11 +158,26 @@ public class employee {
         this.sells.add(newSell);
     }
 
-    public employee(int code, String name, String adress, String payday, int type){
+    public float calcCommission(float value){
+        float valCommission;
+        float percentage = this.commission;
+        Scanner keyboard = new Scanner(System.in);
+
+        percentage = percentage/100;
+
+        valCommission = percentage*value;
+
+        return valCommission;
+    }
+
+    public employee(int code, String name, String adress, String payday, float hSalary, float monSalary, float commission, int type){
         this.code = code;
         this.name = name;
         this.adress = adress;
         this.payday = payday;
+        this.hSalary = hSalary;
+        this.monSalary = monSalary;
+        this.commission = commission;
         this.type = type;
     }
 }
