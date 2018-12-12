@@ -18,6 +18,16 @@ public class employee {
     private int syndiNumber;
     private float salary;
 
+    public String getPayday() {
+        return payday;
+    }
+
+    public void setPayday(String payday) {
+        this.payday = payday;
+    }
+
+    private String payday;
+
     public int getCode(){
         return this.code;
     }
@@ -115,10 +125,11 @@ public class employee {
         this.sells.add(newSell);
     }
 
-    public employee(int code, String name, String adress, int type){
+    public employee(int code, String name, String adress, String payday, int type){
         this.code = code;
         this.name = name;
         this.adress = adress;
+        this.payday = payday;
         this.type = type;
     }
 }
