@@ -1,7 +1,12 @@
 /* TIPOS DE EMPREGADOS
 1 - Hourly
 2 - Salaried
-3 - Commisioned */
+3 - Commisioned
+
+MÉTODOS DE PAGAMENTO
+1 - Cheque pelos Correios
+2 - Cheque em mãos
+3 - Depósito em conta*/
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -20,6 +25,7 @@ public class employee {
     private float monSalary;
     private float commission;
     private String payday;
+    private int payMethod;
 
     public String getPayday() {
         return payday;
@@ -85,6 +91,14 @@ public class employee {
         return false;
     }
 
+    public int getPayMethod() {
+        return payMethod;
+    }
+
+    public void setPayMethod(int payMethod) {
+        this.payMethod = payMethod;
+    }
+
     public void setName(String newName){
         this.name = newName;
     }
@@ -131,13 +145,13 @@ public class employee {
     }
 
     public void addTaxes(){
-        
+
         Scanner keyboard = new Scanner(System.in);
         float value;
 
         System.out.printf("Digite o valor da taxa a ser adicionada: ");
         value = keyboard.nextFloat();
-        
+
         this.taxes+=value;
     }
 
@@ -170,11 +184,12 @@ public class employee {
         return valCommission;
     }
 
-    public employee(int code, String name, String adress, String payday, float hSalary, float monSalary, float commission, int type){
+    public employee(int code, String name, String adress, String payday, int payMethod, float hSalary, float monSalary, float commission, int type){
         this.code = code;
         this.name = name;
         this.adress = adress;
         this.payday = payday;
+        this.payMethod = payMethod;
         this.hSalary = hSalary;
         this.monSalary = monSalary;
         this.commission = commission;
