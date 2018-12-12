@@ -4,6 +4,7 @@
 3 - Commisioned */
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class employee {
     private int code;
@@ -11,10 +12,11 @@ public class employee {
     private String adress;
     private int type;
     private ArrayList<card> timecards = new ArrayList<>();
-    //ADD VENDAS
+    private ArrayList<sell> sells = new ArrayList<>();
     private float taxes;
     private boolean syndicate;
     private int syndiNumber;
+    private float salary;
 
     public int getCode(){
         return this.code;
@@ -60,13 +62,31 @@ public class employee {
         this.syndicate = false;
     }
 
-    public card getTimecards(){
+    /*public card getTimecards(){
         for(int i=0;i<timecards.size();i++){
-            return timecards.get(i);
+            card CARDS = this.timecards.get(i);
+            return CARDS;
         }
-    }
+    }*/
 
-    public void addTimecard(card newCard){
+    public void addTimecard(){
+        card newCard;
+        String entry;
+        String exit;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Digite o horário de entrada no formato HH:MM: ");
+        entry = keyboard.nextLine();
+
+        System.out.println("Digite o horário de entrada no formato HH:MM: ");
+        exit = keyboard.nextLine();
+
+        newCard = new card(entry, exit, this.code);
+
+        float whours = newCard.getHours();
+
+        System.out.println("Esse cartão registrou " + whours + " horas de trabalho");
+
         this.timecards.add(newCard);
     }
 
@@ -76,6 +96,23 @@ public class employee {
 
     public void addTaxes(float value){
         this.taxes+=value;
+    }
+
+    public void addSell(){
+        sell newSell;
+        String date;
+        float value;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.printf("Digite a data da venda no formato DD/MM/AAAA: ");
+        date = keyboard.nextLine();
+
+        System.out.printf("Digite agora o valor da venda: ");
+        value = keyboard.nextFloat();
+
+        newSell = new sell(date, value, this.getCode());
+
+        this.sells.add(newSell);
     }
 
     public employee(int code, String name, String adress, int type){
