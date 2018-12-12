@@ -1,17 +1,27 @@
+/*DIAS DA SEMANA:
+01 - Domingo
+02 - Segunda
+03 - Terça
+04 - Quarta
+05 - Quinta
+06 - Sexta
+07 - Sábado
+ */
+
 import java.util.ArrayList;
 import java.util.Scanner;
-import static java.lang.System.exit;
 
 public class main {
 
     public static int countEmployees = 0;
 
     public static ArrayList<employee> EMPLOYEES = new ArrayList<>();
+    public static ArrayList<paymentAgenda> AGENDAS = new ArrayList<>();
 
     public static void addEmployee(){
         employee newEmployee;
-        String name, adress, payday;
-        float hSalary, monSalary, commission;
+        String name, adress, payday, paymentAgenda;
+        float hSalary=0, monSalary=0, commission=0;
         int type, payMethod;
 
         Scanner keyboard = new Scanner(System.in);
@@ -30,14 +40,10 @@ public class main {
             case 1:
                 System.out.println("Salário por hora: ");
                 hSalary = keyboard.nextFloat();
-                monSalary = 0;
-                commission = 0;
                 break;
             case 2:
                 System.out.println("Salário Mensal: ");
                 monSalary = keyboard.nextFloat();
-                hSalary = 0;
-                commission = 0;
                 break;
             case 3:
                 System.out.println("Salário Mensal: ");
@@ -45,7 +51,6 @@ public class main {
 
                 System.out.println("Comissão: ");
                 commission = keyboard.nextFloat();
-                hSalary = 0;
                 break;
             default:
                 System.out.println("TIPO DE SALÁRIO INVÁLIDO. Por favor, tente novamente");
@@ -58,9 +63,12 @@ public class main {
         System.out.println("Método de pagamento\n1 - Cheque pelos Correios\n2 - Cheque em mãos\n3 - Depósito em conta");
         payMethod = keyboard.nextInt();
 
+        System.out.println("Agenda de Pagamento: ");
+        paymentAgenda = keyboard.nextLine();
+
         keyboard.nextLine();
 
-        newEmployee = new employee(countEmployees, name, adress, payday, payMethod, hSalary, monSalary, commission, type);
+        newEmployee = new employee(countEmployees, name, adress, payday, payMethod, hSalary, monSalary, commission, type, paymentAgenda);
 
         EMPLOYEES.add(newEmployee);
 
@@ -97,7 +105,7 @@ public class main {
 
         for(int i=0;i<countEmployees;i++){
             if(EMPLOYEES.get(i).getPayday().equals(date)){
-                //Rotina de pagamento aqui
+                EMPLOYEES.get(i).paymentRoutine();
             }
         }
     }
@@ -216,38 +224,12 @@ public class main {
         }//End switch
     }
 
-    public static void searchEmployee() {
-        String nome;
-        Scanner keyboard = new Scanner(System.in);
-        boolean flag = false;
-        System.out.println("--PESQUISA DE FUNCIONÁRIO--");
-        System.out.println("Digite o nome do funcionário: ");
-        nome = keyboard.nextLine();
-
-        int code = getEmployeeID(nome);
-
-        for (int i = 0; i < countEmployees; i++) {
-            if ((EMPLOYEES.get(i).getCode()) == code) {
-                flag = true;
-                System.out.println("Matrícula: " + EMPLOYEES.get(i).getCode());
-                System.out.println("Nome: " + EMPLOYEES.get(i).getName());
-                System.out.println("Endereço: " + EMPLOYEES.get(i).getAdress());
-                System.out.println("Tipo de salário: " + EMPLOYEES.get(i).getType());
-                System.out.println("\n");
-            }//End if
-        }//End for
-
-        if(flag == false){
-            System.out.println("--FUNCIONÁRIO NÃO ENCONTRADO--");
-        }
-
-    }//End searchEmployee
-
     public static void init(int flag){
         if(flag==1) {
 
+            String name;
             Scanner keyboard = new Scanner(System.in);
-            int option;
+            int option, code;
 
             System.out.println("Bem vindo ao sistema de Folha de Pagamento\nO que deseja fazer?");
             System.out.println("1 - Adicionar um empregado");
@@ -274,11 +256,11 @@ public class main {
 
                 case 2: //Remover um funcionário
                     System.out.println("Digite o nome do funcionário: ");
-                    String name = keyboard.next();
+                    name = keyboard.next();
                     keyboard.nextLine();
 
 
-                    int code = getEmployeeID(name);
+                    code = getEmployeeID(name);
 
                     deleteEmployee(code);
 
@@ -315,10 +297,10 @@ public class main {
                     break;
                 case 5: //Add taxa de serviço
                     System.out.println("Digite o nome do funcionário: ");
-                    String name = keyboard.next();
+                    name = keyboard.next();
                     keyboard.nextLine();
 
-                    int code = getEmployeeID(name);
+                    code = getEmployeeID(name);
 
                     EMPLOYEES.get(code).addTaxes();
 
@@ -348,18 +330,29 @@ public class main {
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
+
                 case 9: //Escolher agenda de pagamento
+                    System.out.println("Digite o nome do funcionário: ");
+                    name = keyboard.nextLine();
+                    keyboard.nextLine();
+
+                    code = getEmployeeID(name);
+
+                    EMPLOYEES.get(code).setPaymentAgenda();
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
+
                 case 10: //Criar nova agenda de pagamento
+                    createPaymentAgenda();
 
                     System.out.println("Deseja continuar?\n 1 - SIM || 2 - NÃO");
                     flag = keyboard.nextInt();
                     init(flag);
                     break;
+
                 default:
                     System.out.println("Opção inválida!");
 
@@ -378,6 +371,20 @@ public class main {
         for(int i=0;i<EMPLOYEES.size();i++) {
             System.out.println(EMPLOYEES.get(i).getName());
         }//Fim do for
+    }
+
+    public static void createPaymentAgenda(){
+        String description;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Digite uma descrição para a nova agenda de pagamento: ");
+        description = keyboard.nextLine();
+        keyboard.nextLine();
+
+        paymentAgenda newAgenda = new paymentAgenda(description);
+
+        AGENDAS.add(newAgenda);
+
     }
 
     public static void main(String args[]){
