@@ -1,14 +1,4 @@
-/*DIAS DA SEMANA:
-01 - Domingo
-02 - Segunda
-03 - Terça
-04 - Quarta
-05 - Quinta
-06 - Sexta
-07 - Sábado
- */
-
-import java.util.ArrayList;
+mport java.util.ArrayList;
 import java.util.Scanner;
 
 public class main {
